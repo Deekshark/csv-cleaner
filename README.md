@@ -36,15 +36,15 @@ Built around the kind of data customers actually hand over: inconsistent date fo
 
 
 
-&#x20;   git clone <your-repo-url>
+    git clone <your-repo-url>
 
-&#x20;   cd csv-cleaner
+    cd csv-cleaner
 
-&#x20;   python -m venv .venv
+    python -m venv .venv
 
-&#x20;   .venv\\Scripts\\activate
+    .venv\Scripts\activate
 
-&#x20;   pip install -r requirements.txt
+    pip install -r requirements.txt
 
 
 
@@ -56,7 +56,7 @@ On Mac or Linux, activate with: source .venv/bin/activate
 
 
 
-&#x20;   python -m cleaner.cli sample_data/messy.csv -o cleaned.csv -c config.yaml
+    python -m cleaner.cli sample_data/messy.csv -o cleaned.csv -c config.yaml
 
 
 
@@ -72,25 +72,25 @@ Settings live in config.yaml, so the same tool works on a different customer's f
 
 
 
-&#x20;   date_columns: [signup_date]
+    date_columns: [signup_date]
 
-&#x20;   dayfirst: true            # 05/01/2026 means 5 January
+    dayfirst: true            # 05/01/2026 means 5 January
 
-&#x20;   numeric_columns: [amount]
+    numeric_columns: [amount]
 
-&#x20;   dedupe_key: [customer_id]
+    dedupe_key: [customer_id]
 
-&#x20;   value_mappings:
+    value_mappings:
 
-&#x20;     city:
+      city:
 
-&#x20;       bangalore: Bengaluru
+        bangalore: Bengaluru
 
-&#x20;       blr: Bengaluru
+        blr: Bengaluru
 
-&#x20;   missing:
+    missing:
 
-&#x20;     amount: flag            # options: drop, fill_zero, flag
+      amount: flag            # options: drop, fill_zero, flag
 
 
 
@@ -124,21 +124,21 @@ Report for the included sample file (report.json):
 
 
 
-&#x20;   {
+    {
 
-&#x20;     "rows_in": 17,
+      "rows_in": 17,
 
-&#x20;     "amount_unparseable": 1,
+      "amount_unparseable": 1,
 
-&#x20;     "signup_date_unparseable": 1,
+      "signup_date_unparseable": 1,
 
-&#x20;     "duplicates_removed": 3,
+      "duplicates_removed": 3,
 
-&#x20;     "amount_missing_count": 4,
+      "amount_missing_count": 4,
 
-&#x20;     "rows_out": 14
+      "rows_out": 14
 
-&#x20;   }
+    }
 
 
 
@@ -160,7 +160,7 @@ Report for the included sample file (report.json):
 
 
 
-&#x20;   python -m pytest -v
+    python -m pytest -v
 
 
 
