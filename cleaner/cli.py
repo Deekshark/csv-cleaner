@@ -24,6 +24,13 @@ def main(argv=None) -> int:
     except FileNotFoundError as e:
         print(f"Error: file not found: {e.filename}", file=sys.stderr)
         return 1
+    except PermissionError as e:
+        print(
+            f"Error: cannot write {e.filename}. "
+            "Is it open in another program (like Excel)?",
+            file=sys.stderr,
+        )
+        return 1
     except ValueError as e:
         print(f"Error: {e}", file=sys.stderr)
         return 1
