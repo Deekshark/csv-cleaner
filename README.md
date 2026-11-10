@@ -1,4 +1,4 @@
-\# csv-cleaner
+# csv-cleaner
 
 
 
@@ -10,29 +10,29 @@ Built around the kind of data customers actually hand over: inconsistent date fo
 
 
 
-\## What it does
+## What it does
 
 
 
-1\. Normalizes headers (Amount ($) becomes amount)
+1. Normalizes headers (Amount ($) becomes amount)
 
-2\. Trims and collapses whitespace, and turns blanks into nulls
+2. Trims and collapses whitespace, and turns blanks into nulls
 
-3\. Cleans numbers ($1,200.50 and ₹2,500 become 1200.5 and 2500.0)
+3. Cleans numbers ($1,200.50 and ₹2,500 become 1200.5 and 2500.0)
 
-4\. Parses mixed date formats into ISO dates
+4. Parses mixed date formats into ISO dates
 
-5\. Standardizes categories through a mapping (BLR, bangalore and BANGALORE all become Bengaluru)
+5. Standardizes categories through a mapping (BLR, bangalore and BANGALORE all become Bengaluru)
 
-6\. Removes duplicates, either exact or by key column
+6. Removes duplicates, either exact or by key column
 
-7\. Handles missing values per column: drop, fill\_zero or flag
+7. Handles missing values per column: drop, fill_zero or flag
 
-8\. Writes the cleaned CSV and a JSON report
+8. Writes the cleaned CSV and a JSON report
 
 
 
-\## Install
+## Install
 
 
 
@@ -52,11 +52,11 @@ On Mac or Linux, activate with: source .venv/bin/activate
 
 
 
-\## Usage
+## Usage
 
 
 
-&#x20;   python -m cleaner.cli sample\_data/messy.csv -o cleaned.csv -c config.yaml
+&#x20;   python -m cleaner.cli sample_data/messy.csv -o cleaned.csv -c config.yaml
 
 
 
@@ -64,7 +64,7 @@ Options: -o output file, -c config file, -r report file, -q quiet mode.
 
 
 
-\## Configuration
+## Configuration
 
 
 
@@ -72,15 +72,15 @@ Settings live in config.yaml, so the same tool works on a different customer's f
 
 
 
-&#x20;   date\_columns: \[signup\_date]
+&#x20;   date_columns: [signup_date]
 
 &#x20;   dayfirst: true            # 05/01/2026 means 5 January
 
-&#x20;   numeric\_columns: \[amount]
+&#x20;   numeric_columns: [amount]
 
-&#x20;   dedupe\_key: \[customer\_id]
+&#x20;   dedupe_key: [customer_id]
 
-&#x20;   value\_mappings:
+&#x20;   value_mappings:
 
 &#x20;     city:
 
@@ -90,7 +90,7 @@ Settings live in config.yaml, so the same tool works on a different customer's f
 
 &#x20;   missing:
 
-&#x20;     amount: flag            # options: drop, fill\_zero, flag
+&#x20;     amount: flag            # options: drop, fill_zero, flag
 
 
 
@@ -98,7 +98,7 @@ The config is validated: unknown keys, invalid policies, and columns that don't 
 
 
 
-\## Example: before and after
+## Example: before and after
 
 
 
@@ -116,7 +116,7 @@ The config is validated: unknown keys, invalid policies, and columns that don't 
 
 
 
-The last column in the After rows is the amount\_missing flag added by the flag policy.
+The last column in the After rows is the amount_missing flag added by the flag policy.
 
 
 
@@ -126,37 +126,37 @@ Report for the included sample file (report.json):
 
 &#x20;   {
 
-&#x20;     "rows\_in": 17,
+&#x20;     "rows_in": 17,
 
-&#x20;     "amount\_unparseable": 1,
+&#x20;     "amount_unparseable": 1,
 
-&#x20;     "signup\_date\_unparseable": 1,
+&#x20;     "signup_date_unparseable": 1,
 
-&#x20;     "duplicates\_removed": 3,
+&#x20;     "duplicates_removed": 3,
 
-&#x20;     "amount\_missing\_count": 4,
+&#x20;     "amount_missing_count": 4,
 
-&#x20;     "rows\_out": 14
+&#x20;     "rows_out": 14
 
 &#x20;   }
 
 
 
-\## Design notes
+## Design notes
 
 
 
-\- \*\*Steps are small, independent functions\*\* that take a DataFrame and return a DataFrame, so they can be reused as stages in a larger data pipeline.
+- **Steps are small, independent functions** that take a DataFrame and return a DataFrame, so they can be reused as stages in a larger data pipeline.
 
-\- \*\*Everything is read as text first\*\*, so pandas never silently guesses a type. Every conversion is explicit and counted.
+- **Everything is read as text first**, so pandas never silently guesses a type. Every conversion is explicit and counted.
 
-\- \*\*Dates use explicit formats\*\*, not guessing. 05/01/2026 is ambiguous (5 January or 1 May), so dayfirst is a visible setting.
+- **Dates use explicit formats**, not guessing. 05/01/2026 is ambiguous (5 January or 1 May), so dayfirst is a visible setting.
 
-\- \*\*Failures are loud.\*\* Empty files, bad encodings, and config columns missing from the CSV raise clear errors.
+- **Failures are loud.** Empty files, bad encodings, and config columns missing from the CSV raise clear errors.
 
 
 
-\## Tests
+## Tests
 
 
 
@@ -164,19 +164,19 @@ Report for the included sample file (report.json):
 
 
 
-\## Limitations and next steps
+## Limitations and next steps
 
 
 
-\- Currency symbols are stripped but not converted, so $ and ₹ values are treated as the same unit. A real dataset would need a currency column.
+- Currency symbols are stripped but not converted, so $ and ₹ values are treated as the same unit. A real dataset would need a currency column.
 
-\- Name casing is not normalized (priya sharma stays lowercase).
+- Name casing is not normalized (priya sharma stays lowercase).
 
-\- When duplicates share a key, the first row wins. Whether the newest or oldest record should win is a business decision and should be configurable.
+- When duplicates share a key, the first row wins. Whether the newest or oldest record should win is a business decision and should be configurable.
 
-\- The whole file is loaded into memory, so very large files would need chunked reading.
+- The whole file is loaded into memory, so very large files would need chunked reading.
 
-\- Input must be UTF-8.
+- Input must be UTF-8.
 
-\- Planned: a Phase 2 data pipeline that reuses these steps with database or API sources and sinks.
+- Planned: a Phase 2 data pipeline that reuses these steps with database or API sources and sinks.
 
