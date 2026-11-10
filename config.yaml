@@ -1,0 +1,10 @@
+date_columns: [signup_date]
+dayfirst: true
+numeric_columns: [amount]
+dedupe_key: [customer_id]
+value_mappings:
+  city:
+    bangalore: Bengaluru
+    blr: Bengaluru
+missing:
+  amount: flag

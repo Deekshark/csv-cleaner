@@ -82,3 +82,22 @@ def map_values(df: pd.DataFrame, mappings: dict) -> pd.DataFrame:
         mapped = df[col].str.lower().map(mapping)
         df[col] = mapped.fillna(df[col].str.title())
     return df
+
+
+def handle_missing(df: pd.DataFrame, policies: dict,
+                   report: dict | None = None) -> pd.DataFrame:
+    """Per-column policy: 'drop' the row, 'fill_zero', or 'flag' with a boolean column."""
+    df = df.copy()
+    for col, policy in policies.items():
+        if col not in df.columns:
+            continue
+        mask = df[col].isna()
+        if report is not None:
+            report[f"{col}_missing_count"] = int(mask.sum())
+        if policy == "drop":
+            df = df[~mask]
+        elif policy == "fill_zero":
+            df[col] = df[col].fillna(0)
+        elif policy == "flag":
+            df[f"{col}_missing"] = mask
+    return df
