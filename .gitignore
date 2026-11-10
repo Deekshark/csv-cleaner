@@ -2,3 +2,7 @@
 __pycache__/
 cleaned.csv
 report.json
+out.csv
+.pytest_cache/
+out.csv
+.pytest_cache/
